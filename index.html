@@ -2,6 +2,7 @@
 <html lang="pt-PT">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Projeto Conceções — Todas as famílias cabem aqui</title>
 <meta name="description" content="Projeto Conceções: encontros mensais na CooLabora (Covilhã) para quem tem filhos ou deseja tê-los, por adoção ou procriação medicamente assistida. Todas as famílias cabem aqui.">
@@ -27,24 +28,6 @@
   --font-body:'Figtree', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --gutter-l:max(20px, env(safe-area-inset-left, 0px));
   --gutter-r:max(20px, env(safe-area-inset-right, 0px));
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#12152A; --surface:#1B1F38; --ink:#ECEDF3; --muted:#B9BCCB; --line:#2C3150;
-    --band:#0B0D1C; --band-ink:#FFFFFF; --band-muted:#C9CBD6; --band-line:#2C3150;
-    --accent:#F08A6C; --focus:#8FB0E6;
-    --map-bg:#1F2440; --map-road:#323A5E; --map-water:#21405A; --map-park:#24402F;
-    --c1:#EC7A5C; --c2:#EBA937; --c3:#2DB3A1; --c4:#6E97DA; --c5:#B27DC4; --dot:#FFFFFF;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#12152A; --surface:#1B1F38; --ink:#ECEDF3; --muted:#B9BCCB; --line:#2C3150;
-  --band:#0B0D1C; --band-ink:#FFFFFF; --band-muted:#C9CBD6; --band-line:#2C3150;
-  --accent:#F08A6C; --focus:#8FB0E6;
-  --map-bg:#1F2440; --map-road:#323A5E; --map-water:#21405A; --map-park:#24402F;
-  --c1:#EC7A5C; --c2:#EBA937; --c3:#2DB3A1; --c4:#6E97DA; --c5:#B27DC4; --dot:#FFFFFF;
-  color-scheme:dark;
 }
 body{background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:17px; line-height:1.6;}
 *{box-sizing:border-box}
@@ -126,7 +109,9 @@ h2{font-family:var(--font-display); font-weight:600; font-size:clamp(32px, 4vw, 
 .contacto .v{font-family:var(--font-display); font-size:21px; font-weight:600; flex:1; min-width:0; overflow-wrap:anywhere; user-select:all}
 .copiar{background:transparent; color:var(--band-ink); border:1.5px solid var(--band-line); border-radius:999px; min-height:44px; padding:8px 16px; font:500 14px var(--font-body); cursor:pointer}
 .copiar:hover{border-color:var(--band-muted)}
-.rodape{padding-block:32px; font-size:14px; color:var(--muted)}
+.rodape{padding-block:32px; font-size:14px; color:var(--muted); border-top:1px solid var(--line); display:flex; flex-direction:column; gap:24px}
+.rodape .rodape-logos{display:block}
+.rodape-logos img{display:block; width:100%; max-width:960px; height:auto; margin-inline:auto}
 .rodape .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
 
 /* Separador Investigação */
@@ -428,7 +413,6 @@ body.editando{padding-bottom:120px}
         '<ol class="pubs">' + pubs + '</ol>' +
         (editing ? '<button type="button" class="mini adicionar" data-acao="adicionar" data-lista="investigacao.publicacoes">+ Adicionar artigo</button>' : '') +
         perfil +
-        '<div class="financiamento"><img src="' + LOGOS + '" alt="Instituições de acolhimento: Universidade da Beira Interior, CIDESD e CooLabora. Financiamento 2024.01020.BDANA: FCT, Pessoas 2030 e Portugal 2030"></div>' +
         '<p class="nota">' + t('investigacao.financiamentoTexto') + '</p>' +
       '</div></section>' +
     '</main>';
@@ -507,7 +491,7 @@ body.editando{padding-bottom:120px}
     '</div></div></section>' +
     '</main>';
 
-    var rodape = '<footer class="rodape"><div class="wrap"><span>Projeto Conceções · CooLabora, Covilhã</span>' + t('rodape') + '</div></footer>';
+    var rodape = '<footer class="rodape"><div class="wrap rodape-logos"><img src="' + LOGOS + '" alt="Instituições de acolhimento: Universidade da Beira Interior, CIDESD e CooLabora. Financiamento 2024.01020.BDANA: FCT, Pessoas 2030 e Portugal 2030"></div><div class="wrap"><span>Projeto Conceções · CooLabora, Covilhã</span>' + t('rodape') + '</div></footer>';
     app.innerHTML = cabecalho + (naInv ? investigacaoHTML() : naCont ? contactosHTML() : naPart ? participarHTML() : principal) + rodape;
     document.body.classList.toggle('editando', editing);
   }
