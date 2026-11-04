@@ -213,6 +213,23 @@ a.mapa:hover .mapa-botao{transform:translateY(-1px)}
 .financiamento{background:var(--logo-bg); border-radius:16px; padding:18px 22px; margin-top:36px}
 .financiamento img{display:block; width:100%; height:auto}
 
+
+/* Ilustrações */
+.ilustra-hero{width:100%; max-width:440px; justify-self:end}
+.ilustra-hero svg{width:100%; height:auto; display:block}
+.ilustra-inicio{max-width:520px}
+.ilustra-sobre{max-width:400px; margin-top:28px}
+.ilustra-sobre svg{width:100%; height:auto; display:block}
+.cartao-tom{border:none}
+.cartao-tom.t0{background:#FBE5DE} .cartao-tom.t1{background:#FBF0D8} .cartao-tom.t2{background:#DCEFEC} .cartao-tom.t3{background:#E2E9F5}
+.cartao-tom p{color:#3E4358}
+.cartao-icone{display:block; width:96px; height:80px; margin-bottom:4px}
+.cartao-icone svg{width:100%; height:100%; display:block}
+@media (max-width: 760px){
+  .ilustra-hero{order:-1; max-width:340px; justify-self:center}
+  .ilustra-sobre{max-width:320px}
+}
+
 /* Modo de edição */
 [data-campo][contenteditable]{outline:1.5px dashed color-mix(in srgb, var(--focus) 70%, transparent); outline-offset:3px; border-radius:4px; cursor:text}
 [data-campo][contenteditable]:focus{outline:2.5px solid var(--focus)}
@@ -756,6 +773,116 @@ body.editando{padding-bottom:120px}
       '<path class="a5" d="M104.88 30.17 A70 70 0 0 1 153.62 55.00"></path>' +
       '</g><circle class="pt" cx="100" cy="100" r="20"></circle></svg>';
   }
+  // ---------- Ilustrações (desenhos originais com as cores do logótipo) ----------
+  var PELE = ['#F3CDB0', '#DDA37C', '#B97B55', '#7C4E34'];
+  var CAB = ['#2B2233', '#5A3A28', '#8C5A3C', '#C98B4A'];
+  var COR = { t: '#E0603F', m: '#EBA937', v: '#1F9A8A', a: '#3767B0', p: '#8A4A9C', k: '#1E2340' };
+  function cabelo(tipo, cx, cy, r, c){
+    if (tipo === 'curto') return '<path d="M' + (cx - r - 1) + ' ' + (cy + 2) + 'a' + (r + 1) + ' ' + (r + 1) + ' 0 0 1 ' + (2 * r + 2) + ' 0c-' + (r * .5) + ' -' + (r * .55) + ' -' + (r * 1.4) + ' -' + (r * .55) + ' -' + (2 * r + 2) + ' 0z" fill="' + c + '"/>';
+    if (tipo === 'longo') return '<rect x="' + (cx - r - 3) + '" y="' + (cy - r - 3) + '" width="' + (2 * r + 6) + '" height="' + (r * 2.6) + '" rx="' + (r + 3) + '" fill="' + c + '"/>';
+    if (tipo === 'coque') return '<circle cx="' + cx + '" cy="' + (cy - r - 3) + '" r="' + (r * .45) + '" fill="' + c + '"/><path d="M' + (cx - r - 1) + ' ' + (cy + 1) + 'a' + (r + 1) + ' ' + (r + 1) + ' 0 0 1 ' + (2 * r + 2) + ' 0z" fill="' + c + '"/>';
+    if (tipo === 'caracois') { var s = ''; for (var i = 0; i < 7; i++) { var a = Math.PI * (1.05 + i * .15); s += '<circle cx="' + (cx + Math.cos(a) * r).toFixed(1) + '" cy="' + (cy + Math.sin(a) * r).toFixed(1) + '" r="' + (r * .38).toFixed(1) + '" fill="' + c + '"/>'; } return s; }
+    return '';
+  }
+  // pessoa de pé, em forma de cápsula; base = linha do chão
+  function pessoa(cx, base, h, corpo, pele, cab, tipo, crianca){
+    var r = h * (crianca ? .16 : .12), w = h * (crianca ? .34 : .27), cy = base - h + r, topo = cy + r + h * .03;
+    var trasLongo = tipo === 'longo' ? cabelo('longo', cx, cy, r, cab) : '';
+    return trasLongo + '<rect x="' + (cx - w / 2).toFixed(1) + '" y="' + topo.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + (base - topo).toFixed(1) + '" rx="' + (w * .48).toFixed(1) + '" fill="' + corpo + '"/>' +
+      '<circle cx="' + cx + '" cy="' + cy.toFixed(1) + '" r="' + r.toFixed(1) + '" fill="' + pele + '"/>' + (tipo !== 'longo' ? cabelo(tipo, cx, cy, r, cab) : cabelo('curto', cx, cy, r, cab));
+  }
+  // braço curvo entre duas mãos (de pessoa a pessoa)
+  function maos(x1, y1, x2, y2, c1, c2){
+    var mx = (x1 + x2) / 2, my = Math.max(y1, y2) + 14;
+    return '<path d="M' + x1 + ' ' + y1 + 'Q' + ((x1 + mx) / 2) + ' ' + my + ' ' + mx + ' ' + (my - 4) + '" stroke="' + c1 + '" stroke-width="9" fill="none" stroke-linecap="round"/>' +
+      '<path d="M' + x2 + ' ' + y2 + 'Q' + ((x2 + mx) / 2) + ' ' + my + ' ' + mx + ' ' + (my - 4) + '" stroke="' + c2 + '" stroke-width="9" fill="none" stroke-linecap="round"/>';
+  }
+  // busto (cabeça e ombros)
+  function busto(cx, base, s, corpo, pele, cab, tipo){
+    var r = s * .3, cy = base - s * 1.05;
+    return (tipo === 'longo' ? cabelo('longo', cx, cy, r, cab) : '') +
+      '<path d="M' + (cx - s * .62) + ' ' + base + 'v-' + (s * .18) + 'a' + (s * .62) + ' ' + (s * .5) + ' 0 0 1 ' + (s * 1.24) + ' 0v' + (s * .18) + 'z" fill="' + corpo + '"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + pele + '"/>' + cabelo(tipo === 'longo' ? 'curto' : tipo, cx, cy, r, cab);
+  }
+  function coracao(x, y, s, c){ return '<path transform="translate(' + x + ' ' + y + ') scale(' + s + ')" d="M0 6C0-2 10-3 10 4 10-3 20-2 20 6 20 13 10 19 10 19S0 13 0 6Z" fill="' + c + '"/>'; }
+  function balao(x, y, w, h, c, dir){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (h / 2.2) + '" fill="' + c + '"/><path d="M' + (x + (dir > 0 ? w * .25 : w * .75)) + ' ' + (y + h - 2) + 'l' + (dir * 4) + ' 14 ' + (dir * 12) + '-14z" fill="' + c + '"/>' +
+      '<circle cx="' + (x + w / 2 - 12) + '" cy="' + (y + h / 2) + '" r="3.5" fill="#fff"/><circle cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="3.5" fill="#fff"/><circle cx="' + (x + w / 2 + 12) + '" cy="' + (y + h / 2) + '" r="3.5" fill="#fff"/>'; }
+  function anel(cx, cy, r, sw, op){
+    var segs = [[166, 204, COR.t], [211, 247, COR.m], [254, 290, COR.v], [297, 333, COR.a], [340, 376, COR.p]], s = '';
+    segs.forEach(function(g){ var a1 = g[0] * Math.PI / 180, a2 = g[1] * Math.PI / 180;
+      s += '<path d="M' + (cx + r * Math.cos(a1)).toFixed(1) + ' ' + (cy + r * Math.sin(a1)).toFixed(1) + 'A' + r + ' ' + r + ' 0 0 1 ' + (cx + r * Math.cos(a2)).toFixed(1) + ' ' + (cy + r * Math.sin(a2)).toFixed(1) + '" stroke="' + g[2] + '" stroke-width="' + sw + '" fill="none" stroke-linecap="round" opacity="' + op + '"/>'; });
+    return s;
+  }
+  function svgIl(vb, corpo, rotulo){ return '<svg viewBox="' + vb + '" role="img" aria-label="' + rotulo + '" xmlns="http://www.w3.org/2000/svg">' + corpo + '</svg>'; }
+
+  var ILUS = {
+    familias: function(){
+      return svgIl('0 0 520 460',
+        '<circle cx="260" cy="232" r="196" fill="#F3F2EF"/>' + anel(260, 232, 196, 18, 1) +
+        coracao(112, 96, 1.6, COR.t) + coracao(392, 120, 1.1, COR.p) +
+        '<circle cx="250" cy="70" r="7" fill="' + COR.m + '"/><circle cx="430" cy="210" r="5" fill="' + COR.v + '"/><circle cx="80" cy="230" r="5" fill="' + COR.a + '"/>' +
+        '<ellipse cx="260" cy="412" rx="210" ry="14" fill="#1E2340" opacity=".07"/>' +
+        // família 1: duas mães e criança
+        maos(104, 330, 132, 352, COR.p, COR.m) + maos(160, 352, 186, 330, COR.m, COR.t) +
+        pessoa(84, 412, 214, COR.p, PELE[2], CAB[0], 'caracois') + pessoa(146, 412, 116, COR.m, PELE[1], CAB[1], 'curto', true) + pessoa(206, 412, 200, COR.t, PELE[0], CAB[3], 'longo') +
+        // pai com bebé ao colo
+        pessoa(282, 412, 222, COR.a, PELE[3], CAB[0], 'curto') +
+        '<ellipse cx="282" cy="318" rx="26" ry="20" fill="' + COR.m + '"/><circle cx="270" cy="300" r="13" fill="' + PELE[3] + '"/><path d="M256 330q26 18 52-4" stroke="' + COR.a + '" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+        // dois pais e criança
+        maos(372, 328, 398, 356, COR.v, COR.t) + maos(424, 356, 450, 328, COR.t, COR.k) +
+        pessoa(354, 412, 206, COR.v, PELE[1], CAB[2], 'curto') + pessoa(411, 412, 104, COR.t, PELE[1], CAB[0], 'coque', true) + pessoa(468, 412, 218, COR.k, PELE[0], CAB[3], 'curto'),
+        'Ilustração: famílias diferentes de mãos dadas — duas mães com uma criança, um pai com um bebé ao colo e dois pais com uma criança.');
+    },
+    conversa: function(){
+      return svgIl('0 0 440 300',
+        '<rect x="20" y="40" width="400" height="240" rx="120" fill="#F3F2EF" opacity=".9"/>' +
+        balao(78, 34, 92, 46, COR.v, 1) + balao(262, 18, 104, 50, COR.t, -1) + balao(176, 92, 84, 40, COR.m, 1) +
+        busto(92, 262, 74, COR.a, PELE[1], CAB[1], 'longo') + busto(178, 262, 70, COR.p, PELE[3], CAB[0], 'caracois') +
+        busto(262, 262, 72, COR.v, PELE[0], CAB[3], 'curto') + busto(348, 262, 76, COR.t, PELE[2], CAB[0], 'coque') +
+        '<rect x="30" y="258" width="380" height="12" rx="6" fill="#1E2340" opacity=".85"/>',
+        'Ilustração: quatro pessoas à volta de uma mesa a conversar, com balões de fala.');
+    },
+    investigacao: function(){
+      return svgIl('0 0 440 400',
+        '<circle cx="220" cy="200" r="178" fill="#F3F2EF"/>' + anel(220, 200, 178, 16, 1) +
+        '<rect x="196" y="96" width="170" height="214" rx="18" fill="#fff" stroke="#E2E0DA" stroke-width="2"/>' +
+        '<rect x="218" y="122" width="96" height="10" rx="5" fill="#1E2340"/><rect x="218" y="142" width="126" height="8" rx="4" fill="#C9CBD6"/><rect x="218" y="158" width="110" height="8" rx="4" fill="#C9CBD6"/>' +
+        '<rect x="222" y="240" width="22" height="46" rx="5" fill="' + COR.t + '"/><rect x="252" y="214" width="22" height="72" rx="5" fill="' + COR.m + '"/><rect x="282" y="226" width="22" height="60" rx="5" fill="' + COR.v + '"/><rect x="312" y="192" width="22" height="94" rx="5" fill="' + COR.a + '"/>' +
+        '<circle cx="330" cy="120" r="34" fill="none" stroke="' + COR.p + '" stroke-width="10"/><path d="M354 144l26 26" stroke="' + COR.p + '" stroke-width="12" stroke-linecap="round"/>' +
+        pessoa(130, 352, 230, COR.v, PELE[1], CAB[0], 'curto') + '<path d="M150 230q30 6 52-12" stroke="' + COR.v + '" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+        '<ellipse cx="200" cy="354" rx="150" ry="10" fill="#1E2340" opacity=".07"/>',
+        'Ilustração: investigador ao lado de um quadro com gráficos de barras e uma lupa.');
+    },
+    entrevista: function(){
+      return svgIl('0 0 440 380',
+        '<circle cx="220" cy="196" r="172" fill="#F3F2EF"/>' + anel(220, 196, 172, 16, 1) +
+        balao(86, 70, 112, 54, COR.m, 1) + balao(240, 46, 124, 58, COR.v, -1) +
+        coracao(200, 140, 1.4, COR.t) +
+        busto(130, 330, 120, COR.p, PELE[2], CAB[0], 'longo') + busto(310, 330, 122, COR.a, PELE[0], CAB[2], 'curto') +
+        '<rect x="54" y="326" width="332" height="14" rx="7" fill="#1E2340" opacity=".85"/>',
+        'Ilustração: duas pessoas frente a frente numa entrevista, com balões de fala e um coração.');
+    },
+    informacao: function(){
+      return svgIl('0 0 440 400',
+        '<circle cx="220" cy="200" r="178" fill="#F3F2EF"/>' + anel(220, 200, 178, 16, 1) +
+        // casa
+        '<path d="M86 210l78-66 78 66v104H86z" fill="' + COR.t + '"/><rect x="146" y="252" width="36" height="62" rx="6" fill="#fff" opacity=".9"/><rect x="104" y="226" width="28" height="26" rx="4" fill="#fff" opacity=".9"/>' + coracao(150, 186, 1.4, '#fff') +
+        // documento com selo
+        '<rect x="232" y="118" width="134" height="176" rx="16" fill="#fff" stroke="#E2E0DA" stroke-width="2"/>' +
+        '<rect x="252" y="142" width="74" height="10" rx="5" fill="#1E2340"/><rect x="252" y="164" width="94" height="8" rx="4" fill="#C9CBD6"/><rect x="252" y="180" width="86" height="8" rx="4" fill="#C9CBD6"/><rect x="252" y="196" width="94" height="8" rx="4" fill="#C9CBD6"/><rect x="252" y="212" width="60" height="8" rx="4" fill="#C9CBD6"/>' +
+        '<circle cx="334" cy="262" r="22" fill="' + COR.v + '"/><path d="M323 262l8 8 14-15" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
+        // família pequena
+        pessoa(296, 352, 118, COR.a, PELE[3], CAB[0], 'coque') + pessoa(334, 352, 66, COR.m, PELE[2], CAB[1], 'curto', true) +
+        '<ellipse cx="226" cy="354" rx="160" ry="10" fill="#1E2340" opacity=".07"/>',
+        'Ilustração: uma casa com um coração, um documento aprovado e uma mãe com uma criança.');
+    },
+    // ícones dos cartões "Para quem é"
+    desejo: function(){ return svgIl('0 0 96 80', busto(36, 78, 40, COR.t, PELE[1], CAB[0], 'longo') + coracao(56, 6, 1.5, COR.t) + '<circle cx="86" cy="40" r="4" fill="' + COR.m + '"/>', ''); },
+    filhos: function(){ return svgIl('0 0 96 80', busto(34, 78, 42, COR.m, PELE[2], CAB[0], 'curto') + busto(70, 78, 26, COR.a, PELE[2], CAB[0], 'caracois'), ''); },
+    solteiros: function(){ return svgIl('0 0 96 80', busto(20, 78, 30, COR.v, PELE[0], CAB[3], 'longo') + busto(58, 78, 32, COR.p, PELE[3], CAB[0], 'curto') + busto(82, 78, 30, COR.v, PELE[1], CAB[1], 'coque'), ''); },
+    todas: function(){ return svgIl('0 0 96 80', busto(22, 78, 30, COR.p, PELE[2], CAB[0], 'caracois') + busto(48, 78, 36, COR.a, PELE[0], CAB[2], 'curto') + busto(76, 78, 30, COR.t, PELE[3], CAB[0], 'longo'), ''); }
+  };
+
   function cor(i){ return 'd' + ((i % 6) + 1); }
   function lista(nome, render){
     return (get(nome) || []).map(function(_, i){ return render(i); }).join('');
@@ -849,7 +976,7 @@ body.editando{padding-bottom:120px}
         '<p class="lead">' + t('informacao.intro') + '</p>' +
         '<p class="nota">' + t('informacao.atualizado') + '</p>' +
         '<div class="acoes" style="margin-top:22px"><a class="btn btn-primario" href="#centros-pma">Centros públicos de PMA</a><a class="btn btn-secundario" href="#centros-privados">Centros privados</a><a class="btn btn-secundario" href="#noticias">Notícias</a></div>' +
-      '</div><div class="simbolo-hero">' + simbolo('', '') + '</div></div></section>' +
+      '</div><div class="ilustra-hero">' + ILUS.informacao() + '</div></div></section>' +
       '<section class="secao cinza"><div class="wrap"><h2>' + t('informacao.leiTitulo') + '</h2><div class="estudos-part tres">' + leis + '</div></div></section>' +
       '<section class="secao" id="centros-pma"><div class="wrap"><div class="duas"><h2>' + t('informacao.centrosTitulo') + '</h2>' + t('informacao.centrosTexto', 'p', 'texto-longo') + '</div>' +
         '<ul class="centros">' + centros + '</ul>' +
@@ -893,7 +1020,7 @@ body.editando{padding-bottom:120px}
         '<h1>' + t('participar.titulo') + '</h1>' +
         '<p class="lead">' + t('participar.intro') + '</p>' +
         '<div class="acoes">' + heroBotao + '<a class="btn btn-secundario" href="#como-funciona">Como funciona</a></div>' +
-      '</div><div class="simbolo-hero">' + simbolo('', '') + '</div></div></section>' +
+      '</div><div class="ilustra-hero">' + ILUS.entrevista() + '</div></div></section>' +
       '<section class="secao cinza"><div class="wrap"><h2>' + t('participar.estudosTitulo') + '</h2>' +
         '<div class="estudos-part">' + lista('participar.estudos', function(i){
           var p = 'participar.estudos.' + i;
@@ -1007,7 +1134,7 @@ body.editando{padding-bottom:120px}
         '<h1>' + t('investigacao.titulo') + '</h1>' +
         '<p class="lead">' + t('investigacao.intro') + '</p>' +
         '<div class="acoes"><a class="btn btn-primario" href="#publicacoes">Ver publicações</a><a class="btn btn-secundario" href="#inicio">Conhecer o Projeto Conceções</a></div>' +
-      '</div><div class="simbolo-hero">' + simbolo('', '') + '</div></div></section>' +
+      '</div><div class="ilustra-hero">' + ILUS.investigacao() + '</div></div></section>' +
       '<section class="secao cinza"><div class="wrap">' +
         '<div class="duas"><h2>' + t('investigacao.temaTitulo') + '</h2><div>' +
           '<div class="tese"><p class="rotulo">' + t('investigacao.teseRotulo') + '</p><p class="tese-titulo">' + t('investigacao.teseTitulo') + '</p></div>' +
@@ -1073,13 +1200,13 @@ body.editando{padding-bottom:120px}
         '<ul class="chips" aria-label="A quem se destina">' + lista('chips', function(i){ return '<li><span class="bolinha ' + cor(i) + '"></span>' + t('chips.' + i) + remover('chips', i, s.chips[i]) + '</li>'; }) +
         (editing ? '<li><button type="button" class="mini" data-acao="adicionar" data-lista="chips">+ Etiqueta</button></li>' : '') + '</ul>' +
       '</div>' +
-      '<div class="simbolo-hero">' + simbolo('', 'Símbolo do Projeto Conceções: um C aberto de cinco cores que acolhe um ponto ao centro') + '</div>' +
+      '<div class="ilustra-hero ilustra-inicio">' + ILUS.familias() + '</div>' +
     '</div></section>' +
 
     '<section class="secao cinza" id="sobre"><div class="wrap">' +
-      '<div class="duas"><h2>' + t('sobreTitulo') + '</h2>' + t('sobreTexto', 'p', 'texto-longo', true) + '</div>' +
+      '<div class="duas"><div><h2>' + t('sobreTitulo') + '</h2><div class="ilustra-sobre">' + ILUS.conversa() + '</div></div>' + t('sobreTexto', 'p', 'texto-longo', true) + '</div>' +
       '<h3 class="rotulo" style="margin-top:48px">' + t('paraQuemTitulo') + '</h3>' +
-      '<div class="cartoes">' + lista('paraQuem', function(i){ return '<article class="cartao"><span class="bolinha ' + cor(i) + '"></span><h3>' + t('paraQuem.' + i + '.titulo') + '</h3>' + t('paraQuem.' + i + '.texto', 'p') + '</article>'; }) + '</div>' +
+      '<div class="cartoes">' + lista('paraQuem', function(i){ var ic = ['desejo', 'filhos', 'solteiros', 'todas'][i]; return '<article class="cartao cartao-tom t' + (i % 4) + '">' + (ic ? '<span class="cartao-icone" aria-hidden="true">' + ILUS[ic]() + '</span>' : '<span class="bolinha ' + cor(i) + '"></span>') + '<h3>' + t('paraQuem.' + i + '.titulo') + '</h3>' + t('paraQuem.' + i + '.texto', 'p') + '</article>'; }) + '</div>' +
     '</div></section>' +
 
     '<section class="secao" id="temas"><div class="wrap">' +
