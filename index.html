@@ -311,7 +311,21 @@ body.editando{padding-bottom:120px}
  "dinamizacaoTitulo": "Quem dinamiza",
  "dinamizacao": {
   "nome": "António Oliveira",
-  "texto": "Psicólogo (OPP n.º 26198) e doutorando em Psicologia Clínica e da Saúde na Universidade da Beira Interior, onde investiga a parentalidade e a procriação medicamente assistida."
+  "texto": "Psicólogo (OPP n.º 26198) e doutorando em Psicologia Clínica e da Saúde na Universidade da Beira Interior, onde investiga a parentalidade e a procriação medicamente assistida.",
+  "links": [
+   {
+    "rotulo": "ORCID",
+    "link": "https://orcid.org/0000-0002-8608-2339"
+   },
+   {
+    "rotulo": "Ciência Vitae",
+    "link": "https://www.cienciavitae.pt/portal/2D10-61E0-1112"
+   },
+   {
+    "rotulo": "LinkedIn",
+    "link": ""
+   }
+  ]
  },
  "inscricao": {
   "titulo": "Inscreva-se",
@@ -1080,6 +1094,11 @@ body.editando{padding-bottom:120px}
       '<p class="nota">' + t('encontroNota') + '</p>' +
       '<div class="pessoa" style="margin-top:48px"><div class="avatar">' + simbolo('', '') + '</div><div>' +
         '<p class="rotulo">' + t('dinamizacaoTitulo') + '</p><h3>' + t('dinamizacao.nome') + '</h3>' + t('dinamizacao.texto', 'p') +
+        '<div class="ligacoes" style="margin-top:16px">' + (get('dinamizacao.links') || []).map(function(l, i){
+          var p = 'dinamizacao.links.' + i;
+          if (editing) return '<div class="campo-inline ligacao-ed"><label for="din-link-' + i + '">' + esc(l.rotulo) + '</label><input id="din-link-' + i + '" type="url" placeholder="https://" data-input="' + p + '.link" value="' + esc(l.link) + '"></div>';
+          return linkValido(l.link) ? '<a class="pub-link" href="' + esc(l.link.trim()) + '" target="_blank" rel="noopener">' + esc(l.rotulo) + ' <span aria-hidden="true">↗</span></a>' : '';
+        }).join('') + '</div>' +
       '</div></div>' +
     '</div></section>' +
 
