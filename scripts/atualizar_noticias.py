@@ -9,7 +9,7 @@ from email.utils import parsedate_to_datetime
 
 MAXIMO = 8
 DIAS_MAXIMO = 120
-EXCLUIR = re.compile(r"people\.com|ew\.com|thegrio|pagesix|usmagazine|eonline|tmz|dailymail|hellomagazine|okmagazine|etonline|justjared|nypost|thesun\.co|mirror\.co|express\.co|vietnam\.vn|aol\.com", re.I)
+EXCLUIR = re.compile(r"r7\.com|letsgobahia|metropoles\.com/celebridades|purepeople|caras\.|quem\.globo|contigo\.|people\.com|ew\.com|thegrio|pagesix|usmagazine|eonline|tmz|dailymail|hellomagazine|okmagazine|etonline|justjared|nypost|thesun\.co|mirror\.co|express\.co|vietnam\.vn|aol\.com", re.I)
 INGLES = 'IVF OR "assisted reproduction" OR surrogacy OR "fertility treatment" OR "same-sex parents" OR "LGBTQ parents" OR "LGBTQ families"'
 REFERENCIA = " OR ".join("site:" + s for s in [
     "bbc.com", "bbc.co.uk", "theguardian.com", "reuters.com", "apnews.com", "npr.org", "dw.com", "euronews.com",
@@ -19,17 +19,20 @@ REFERENCIA = " OR ".join("site:" + s for s in [
 
 PESQUISAS = {
     "portugal": {
-        "consultas": ['"procriação medicamente assistida" OR "gestação de substituição" OR "barrigas de aluguer" OR "barriga de aluguer" OR infertilidade OR "fertilização in vitro" OR "adoção de crianças" OR homoparentais OR "famílias LGBT" when:120d'],
-        "params": "hl=pt-PT&gl=PT&ceid=PT:pt-150",
+        "consultas": [('"procriação medicamente assistida" OR "gestação de substituição" OR "barrigas de aluguer" OR "barriga de aluguer" OR infertilidade OR "fertilização in vitro" OR "adoção de crianças" OR homoparentais OR "famílias LGBT" when:120d', "hl=pt-PT&gl=PT&ceid=PT:pt-150")],
         "so_portugal": True,
         "tema": re.compile(r"procria|\bPMA\b|gesta[çc][ãa]o de substitui|barrigas? de aluguer|infertil|fertilidade|fertiliza[çc][ãa]o|in vitro|embri[ãa]o|embri[õo]es|ado[çc][ãa]o|adot|homoparent|LGBT|parentalidade", re.I),
     },
     "mundo": {
-        # primeiro fontes de referência; se forem poucas, completa com a pesquisa geral
-        "consultas": ["(" + INGLES + ") (" + REFERENCIA + ")", INGLES + " when:30d"],
-        "params": "hl=en-US&gl=US&ceid=US:en",
+        # 1.º imprensa em português do Brasil e de outros países lusófonos;
+        # se houver poucas, completa com imprensa internacional de referência (em inglês)
+        "consultas": [
+            ('"reprodução assistida" OR "fertilização in vitro" OR "barriga solidária" OR "barriga de aluguel" OR "gestação de substituição" OR "útero de substituição" OR "adoção de crianças" OR "fila de adoção" OR homoafetivos OR "famílias LGBT" OR "congelamento de óvulos" when:30d', "hl=pt-BR&gl=BR&ceid=BR:pt-419"),
+            ('"procriação medicamente assistida" OR "reprodução assistida" OR "barriga de aluguer" OR "gestação de substituição" OR infertilidade OR "adoção de crianças" when:60d', "hl=pt-PT&gl=PT&ceid=PT:pt-150"),
+            ("(" + INGLES + ") (" + REFERENCIA + ")", "hl=en-US&gl=US&ceid=US:en"),
+        ],
         "so_portugal": False,
-        "tema": re.compile(r"\bIVF\b|in vitro|surroga|fertility|infertil|embryo|assisted reproduc|egg freez|sperm donor|same-sex (parent|couple)|LGBTQ?\+? (parent|famil)|adoption", re.I),
+        "tema": re.compile(r"reprodu[çc][ãa]o (humana )?assistida|procria|fertiliza[çc][ãa]o|in vitro|\bFIV\b|barriga (solid[áa]ria|de alug)|gesta[çc][ãa]o de substitui|[úu]tero de substitui|infertil|fertilidade|embri[ãa]o|embri[õo]es|ado[çc][ãa]o|adot|homoafetiv|homoparent|LGBT|congelamento de [óo]vulos|insemina|\bIVF\b|surroga|fertility|embryo|assisted reproduc|egg freez|same-sex (parent|couple)|LGBTQ?\+? (parent|famil)|adoption", re.I),
     },
 }
 
@@ -72,13 +75,16 @@ def main(destino):
     res = {}
     for k, p in PESQUISAS.items():
         lista = []
-        for q in p["consultas"]:
+        for q, params in p["consultas"]:
             if len(lista) >= MAXIMO: break
-            try: novos = ler(rss(q, p["params"]), p)
+            try: novos = ler(rss(q, params), p)
             except Exception as e:
                 print(k, "erro:", e, file=sys.stderr); continue
-            links = {n["link"] for n in lista}
-            lista += [n for n in novos if n["link"] not in links][: MAXIMO - len(lista)]
+            for n in novos:  # no máximo 2 notícias por fonte, para haver variedade
+                if len(lista) >= MAXIMO: break
+                if n["link"] in {x["link"] for x in lista}: continue
+                if sum(1 for x in lista if x["fonte"] == n["fonte"]) >= 2: continue
+                lista.append(n)
         res[k] = sorted(lista, key=lambda n: n["data"], reverse=True)
     try: antigo = json.load(open(destino, encoding="utf-8"))
     except Exception: antigo = {}
