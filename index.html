@@ -747,11 +747,11 @@ body.editando{padding-bottom:120px}
     return (get(nome) || []).map(function(_, i){ return render(i); }).join('');
   }
   var VISTAS = { investigacao: 'investigacao', publicacoes: 'investigacao', contactos: 'contactos', participar: 'participar', 'como-funciona': 'participar', informacao: 'informacao', 'centros-pma': 'informacao', 'centros-privados': 'informacao', noticias: 'informacao' };
-  // Notícias automáticas: vêm de /api/noticias (função do Cloudflare que lê o Google Notícias).
+  // Notícias automáticas: vêm de noticias.json, atualizado 4 vezes por dia por uma tarefa no GitHub que lê o Google Notícias.
   var NOTICIAS = null, NOTICIAS_PEDIDO = false;
   function urlNoticias(){
     var h = location.hostname;
-    return (/(^|\.)concecoes\.pt$/.test(h) || /\.pages\.dev$/.test(h)) ? '/api/noticias' : 'https://concecoes.pt/api/noticias';
+    return (/(^|\.)concecoes\.pt$/.test(h) || /\.pages\.dev$/.test(h)) ? '/noticias.json' : 'https://concecoes.pt/noticias.json';
   }
   function dataPT(iso){
     var d = new Date(iso); if (isNaN(d)) return '';
@@ -786,7 +786,7 @@ body.editando{padding-bottom:120px}
     if (NOTICIAS_PEDIDO) return; NOTICIAS_PEDIDO = true;
     var fim = function(d){ NOTICIAS = d; preencherNoticias(); };
     try {
-      fetch(urlNoticias(), { headers: { 'Accept': 'application/json' } })
+      fetch(urlNoticias(), { cache: 'no-cache' })
         .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(function(d){ fim((d && (d.portugal || d.mundo)) ? d : false); })
         .catch(function(){ fim(false); });
