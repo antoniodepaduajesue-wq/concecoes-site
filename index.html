@@ -242,6 +242,31 @@ a.mapa:hover .mapa-botao{transform:translateY(-1px)}
 .orientador > div{flex:1; min-width:0}
 @media (max-width: 760px){ .orientacao{grid-template-columns:minmax(0,1fr)} .orientador{flex-direction:column} }
 
+
+/* Temas 18 */
+.eixos{list-style:none; padding:0; margin:24px 0 0; display:flex; flex-wrap:wrap; gap:8px 20px}
+.eixos li{display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; color:var(--muted)}
+.eixo-marca{display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:26px; padding:0 8px; border-radius:999px; color:#fff; font:600 13px var(--font-body)}
+.ex1 .tema-n, .eixo-marca.ex1{background:#C4472A} .ex2 .tema-n, .eixo-marca.ex2{background:#7A3F8B} .ex3 .tema-n, .eixo-marca.ex3{background:#2D5A9E} .ex4 .tema-n, .eixo-marca.ex4{background:#1F7F72}
+.temas18{list-style:none; padding:0; margin:24px 0 0; display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:12px}
+.tema{display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:16px; background:var(--surface)}
+.tema.ex1{background:#FBE5DE} .tema.ex2{background:#F1E4F4} .tema.ex3{background:#E2E9F5} .tema.ex4{background:#DCEFEC}
+.tema-n{flex:0 0 38px; height:38px; border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; font:600 17px var(--font-display)}
+.tema > div{flex:1; min-width:0; display:flex; flex-direction:column; gap:4px}
+.tema-titulo{font-weight:600; font-size:17px; line-height:1.35}
+.tema-eixo{font-size:13px; font-weight:600; color:#4A4F63}
+/* Parceiros */
+.parceiros{list-style:none; padding:0; margin:28px 0 0; display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px}
+.parceiro{border:1px solid var(--line); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; gap:6px}
+.parceiro-nome{font-family:var(--font-display); font-size:19px; font-weight:600; text-decoration:none; color:var(--ink)}
+a.parceiro-nome:hover{text-decoration:underline}
+.parceiros-vazio{margin:28px 0 0; padding:20px 22px; border:1.5px dashed var(--line); border-radius:16px; color:var(--muted)}
+.parc-colunas{display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px}
+.h2-peq{font-size:clamp(26px, 3vw, 32px); margin:0 0 12px}
+.visto.v-laranja{background:#C4472A} .visto.v-azul{background:#2D5A9E}
+.rodape a{color:var(--ink)}
+@media (max-width: 760px){ .temas18{grid-template-columns:minmax(0,1fr)} }
+
 /* Modo de edição */
 [data-campo][contenteditable]{outline:1.5px dashed color-mix(in srgb, var(--focus) 70%, transparent); outline-offset:3px; border-radius:4px; cursor:text}
 [data-campo][contenteditable]:focus{outline:2.5px solid var(--focus)}
@@ -318,14 +343,80 @@ body.editando{padding-bottom:120px}
    "texto": "Heterossexuais e LGBTQIA+. Aqui, cada família é bem-vinda tal como é."
   }
  ],
- "temasTitulo": "Alguns temas dos encontros",
+ "temasTitulo": "Os 18 temas dos encontros",
  "temas": [
-  "O desejo de ser mãe ou pai",
-  "Caminhos possíveis: adoção, PMA e outras vias",
-  "Decidir a dois ou a solo",
-  "Serviços, leis e burocracias",
-  "Contar à criança a sua história",
-  "A rede de apoio: família, amigos e trabalho"
+  {
+   "titulo": "Desejar ser mãe ou pai: entre sonhos, medos e possibilidades",
+   "eixo": "I"
+  },
+  {
+   "titulo": "Famílias que (re)existem: diversidade na parentalidade",
+   "eixo": "II"
+  },
+  {
+   "titulo": "Introdução à PMA: caminhos de conceção para todas as pessoas",
+   "eixo": "I"
+  },
+  {
+   "titulo": "Infertilidade e sofrimento emocional",
+   "eixo": "I"
+  },
+  {
+   "titulo": "Parentalidade e migração: quando o cuidado atravessa fronteiras",
+   "eixo": "II"
+  },
+  {
+   "titulo": "Gestação, parto e pós-parto: preparação emocional e apoios",
+   "eixo": "I"
+  },
+  {
+   "titulo": "Educar com afeto: relações saudáveis com crianças",
+   "eixo": "III"
+  },
+  {
+   "titulo": "Práticas parentais positivas e disciplina consciente",
+   "eixo": "III"
+  },
+  {
+   "titulo": "Quando contar? Como contar? Diálogos sobre origem e identidade",
+   "eixo": "III"
+  },
+  {
+   "titulo": "Saúde mental na parentalidade: cuidar de si para cuidar",
+   "eixo": "IV"
+  },
+  {
+   "titulo": "Redes de apoio e cuidado partilhado",
+   "eixo": "IV"
+  },
+  {
+   "titulo": "Género e parentalidade: repensar papéis e expectativas",
+   "eixo": "II"
+  },
+  {
+   "titulo": "Crianças arco-íris: criar filhos em famílias LGBTQIA+",
+   "eixo": "II"
+  },
+  {
+   "titulo": "Parentalidade em situação de vulnerabilidade social",
+   "eixo": "II"
+  },
+  {
+   "titulo": "Festas, tradições e pertença em famílias diversas",
+   "eixo": "III"
+  },
+  {
+   "titulo": "Afeto e limites: construir segurança na infância",
+   "eixo": "III"
+  },
+  {
+   "titulo": "Parentalidade e luto: perdas gestacionais e neonatais",
+   "eixo": "IV"
+  },
+  {
+   "titulo": "Avaliação coletiva e encerramento: caminhos futuros",
+   "eixo": "IV"
+  }
  ],
  "encontrosTitulo": "Quando e onde",
  "encontro": {
@@ -768,7 +859,76 @@ body.editando{padding-bottom:120px}
    "rotuloLink": "Ciência Vitae",
    "link": "https://www.cienciavitae.pt/E21D-E87C-F129"
   }
- ]
+ ],
+ "temasTexto": "Um tema por mês, ao longo de 18 meses, depois de uma sessão de abertura de apresentação do projeto. Cada encontro é independente: pode vir a um só ou a todos. A ordem pode ser ajustada ao calendário.",
+ "eixos": [
+  {
+   "id": "I",
+   "nome": "O desejo e os caminhos"
+  },
+  {
+   "id": "II",
+   "nome": "Diversidade familiar e direitos"
+  },
+  {
+   "id": "III",
+   "nome": "Educar e comunicar"
+  },
+  {
+   "id": "IV",
+   "nome": "Saúde mental e redes de cuidado"
+  }
+ ],
+ "parceirosTitulo": "Instituições parceiras",
+ "parceirosTexto": "Escolas, centros de saúde, associações, autarquias e empresas podem ajudar a fazer chegar o Projeto Conceções e o estudo a mais famílias. A parceria é gratuita e centra-se na divulgação.",
+ "parceiros": [],
+ "parceirosVazio": "Ainda não há instituições parceiras de divulgação. A sua pode ser a primeira.",
+ "parcerias": {
+  "eyebrow": "Parcerias de divulgação",
+  "titulo": "Ajude-nos a chegar a mais famílias",
+  "intro": "Procuramos instituições que queiram divulgar os encontros do Projeto Conceções e o estudo de doutoramento que lhe está associado. A parceria é gratuita, flexível e não envolve a partilha de dados pessoais.",
+  "pedimosTitulo": "O que pedimos",
+  "pedimos": [
+   "Afixar o cartaz e disponibilizar flyers nos vossos espaços.",
+   "Partilhar as publicações do projeto nas vossas redes sociais, site ou newsletter.",
+   "Informar utentes, associados ou colaboradores sobre os encontros mensais e sobre a possibilidade de participar no estudo.",
+   "Se fizer sentido, receber uma breve apresentação do projeto à vossa equipa."
+  ],
+  "oferecemosTitulo": "O que oferecemos",
+  "oferecemos": [
+   "Materiais de divulgação prontos a usar: cartaz, flyer e textos para redes sociais.",
+   "Referência como instituição parceira neste site e nas apresentações do projeto.",
+   "Uma apresentação do projeto à vossa equipa ou ao vosso público, se a pedirem.",
+   "Um resumo dos principais resultados do estudo, no final da investigação."
+  ],
+  "compromissosTitulo": "Os nossos compromissos",
+  "compromissos": [
+   "A parceria serve apenas para divulgação: as instituições não recrutam participantes nem recolhem dados em nome do estudo.",
+   "Nenhum dado pessoal de utentes é partilhado com o projeto. Quem quiser participar contacta-nos diretamente.",
+   "A participação no estudo é voluntária e confidencial, e tem parecer favorável da Comissão de Ética da UBI (CE-UBI-Pj-2025-027-ID7158).",
+   "A parceria não tem custos e pode terminar a qualquer momento, por qualquer das partes."
+  ],
+  "passosTitulo": "Como se tornar instituição parceira",
+  "passos": [
+   {
+    "titulo": "Contacte-nos",
+    "texto": "Envie um e-mail com o nome da instituição, a pessoa de contacto e a forma como gostaria de divulgar."
+   },
+   {
+    "titulo": "Combinamos",
+    "texto": "Respondemos em poucos dias e enviamos os materiais de divulgação."
+   },
+   {
+    "titulo": "Divulgamos juntos",
+    "texto": "Com a vossa autorização, a instituição passa a constar da lista de parceiros neste site."
+   }
+  ],
+  "contactoTitulo": "Contacto para parcerias",
+  "contactoTexto": "António Oliveira, psicólogo e investigador responsável pelo Projeto Conceções.",
+  "email": "antonio.oliveira@ubi.pt",
+  "telemovel": "912 790 023",
+  "botao": "Quero ser instituição parceira"
+ }
 }</script>
 <script id="motor">
 (function(){
@@ -916,7 +1076,7 @@ body.editando{padding-bottom:120px}
   function lista(nome, render){
     return (get(nome) || []).map(function(_, i){ return render(i); }).join('');
   }
-  var VISTAS = { investigacao: 'investigacao', publicacoes: 'investigacao', contactos: 'contactos', participar: 'participar', 'como-funciona': 'participar', informacao: 'informacao', 'centros-pma': 'informacao', 'centros-privados': 'informacao', noticias: 'informacao' };
+  var VISTAS = { investigacao: 'investigacao', publicacoes: 'investigacao', contactos: 'contactos', participar: 'participar', 'como-funciona': 'participar', informacao: 'informacao', 'centros-pma': 'informacao', 'centros-privados': 'informacao', noticias: 'informacao', parcerias: 'parcerias', 'condicoes-parceria': 'parcerias' };
   // Notícias automáticas: vêm de noticias.json, atualizado 4 vezes por dia por uma tarefa no GitHub que lê o Google Notícias.
   var NOTICIAS = null, NOTICIAS_PEDIDO = false;
   function urlNoticias(){
@@ -1126,8 +1286,41 @@ body.editando{padding-bottom:120px}
       '</div></div></section>' +
     '</main>';
   }
+
+  function mailParceria(){
+    return 'mailto:' + encodeURIComponent((get('parcerias.email') || 'antonio.oliveira@ubi.pt').trim()).replace('%40', '@') + '?subject=' + encodeURIComponent('Parceria de divulgação — Projeto Conceções') +
+      '&body=' + encodeURIComponent('Instituição:\nPessoa de contacto:\nTelefone:\nComo gostaríamos de divulgar:\n');
+  }
+  function parceriasHTML(){
+    var itens = function(nome, ic){ return '<ul class="direitos">' + lista('parcerias.' + nome, function(i){ return '<li><span class="visto' + (ic ? ' ' + ic : '') + '" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + t('parcerias.' + nome + '.' + i, 'span') + '</li>'; }) + '</ul>'; };
+    var passos = lista('parcerias.passos', function(i){ var p = 'parcerias.passos.' + i;
+      return '<li class="passo"><span class="passo-n">' + (i + 1) + '</span><h3>' + t(p + '.titulo') + '</h3>' + t(p + '.texto', 'p') + '</li>'; });
+    return '<main id="pagina-parcerias">' +
+      '<section class="hero hero-inv"><div class="wrap"><div>' +
+        '<p class="eyebrow">' + t('parcerias.eyebrow') + '</p>' +
+        '<h1>' + t('parcerias.titulo') + '</h1>' +
+        '<p class="lead">' + t('parcerias.intro') + '</p>' +
+        '<div class="acoes"><a class="btn btn-primario" href="' + mailParceria() + '">' + t('parcerias.botao') + '</a><a class="btn btn-secundario" href="#contacto-parcerias">Contactos</a></div>' +
+      '</div><div class="ilustra-hero">' + ILUS.conversa() + '</div></div></section>' +
+      '<section class="secao cinza"><div class="wrap"><div class="parc-colunas">' +
+        '<div class="cartao cartao-grande"><h2 class="h2-peq">' + t('parcerias.pedimosTitulo') + '</h2>' + itens('pedimos', 'v-laranja') + '</div>' +
+        '<div class="cartao cartao-grande"><h2 class="h2-peq">' + t('parcerias.oferecemosTitulo') + '</h2>' + itens('oferecemos', 'v-azul') + '</div>' +
+      '</div></div></section>' +
+      '<section class="secao"><div class="wrap"><div class="duas"><h2>' + t('parcerias.compromissosTitulo') + '</h2>' + itens('compromissos', '') + '</div></div></section>' +
+      '<section class="secao cinza"><div class="wrap"><h2>' + t('parcerias.passosTitulo') + '</h2><ol class="passos">' + passos + '</ol></div></section>' +
+      '<section class="faixa" id="contacto-parcerias"><div class="wrap"><div class="duas">' +
+        '<div><h2>' + t('parcerias.contactoTitulo') + '</h2><p>' + t('parcerias.contactoTexto') + '</p><a class="btn" href="' + mailParceria() + '">' + t('parcerias.botao') + ' <span aria-hidden="true">→</span></a></div>' +
+        '<div class="contactos">' +
+          '<div class="contacto"><span class="r">E-mail</span><span class="v">' + t('parcerias.email') + '</span><button type="button" class="copiar" data-copiar="parcerias.email">Copiar</button></div>' +
+          '<div class="contacto"><span class="r">Telemóvel</span><span class="v">' + t('parcerias.telemovel') + '</span><button type="button" class="copiar" data-copiar="parcerias.telemovel">Copiar</button></div>' +
+        '</div>' +
+      '</div></div></section>' +
+    '</main>';
+  }
+
   var NOVOS = {
-    temas: 'Novo tema',
+    temas: { titulo: 'Novo tema', eixo: 'I' },
+    parceiros: { nome: 'Nome da instituição', link: '' },
     chips: 'Nova etiqueta',
     'informacao.noticias': { data: 'DD/MM/AAAA', titulo: 'Título da notícia', fonte: 'Fonte', link: '' },
     'informacao.centros': { nome: 'Nome do centro', cidade: 'Cidade', destaque: '' },
@@ -1210,7 +1403,7 @@ body.editando{padding-bottom:120px}
         '<div class="em-breve">' + t('inscricao.emBreve') + '</div>';
     }
 
-    var v = vista(), naInv = v === 'investigacao', naCont = v === 'contactos', naPart = v === 'participar', naInfo = v === 'informacao';
+    var v = vista(), naInv = v === 'investigacao', naCont = v === 'contactos', naPart = v === 'participar', naInfo = v === 'informacao', naParc = v === 'parcerias';
     var cabecalho =
     '<header class="topo"><div class="wrap">' +
       '<a class="marca" href="#inicio" aria-label="Projeto Conceções, início">' + simbolo('', '').replace('<svg', '<svg width="44" height="44"') +
@@ -1239,8 +1432,12 @@ body.editando{padding-bottom:120px}
     '</div></section>' +
 
     '<section class="secao" id="temas"><div class="wrap">' +
-      '<h2>' + t('temasTitulo') + '</h2>' +
-      '<ul class="temas">' + lista('temas', function(i){ return '<li><span class="bolinha ' + cor(i) + '"></span>' + t('temas.' + i) + remover('temas', i, s.temas[i]) + '</li>'; }) + '</ul>' +
+      '<div class="duas"><h2>' + t('temasTitulo') + '</h2>' + t('temasTexto', 'p', 'texto-longo') + '</div>' +
+      '<ul class="eixos" aria-label="Eixos temáticos">' + (s.eixos || []).map(function(e, i){ return '<li><span class="eixo-marca ex' + (i + 1) + '">' + esc(e.id) + '</span>' + t('eixos.' + i + '.nome') + '</li>'; }).join('') + '</ul>' +
+      '<ol class="temas18">' + lista('temas', function(i){
+        var tm = s.temas[i] || {}, ei = ['I', 'II', 'III', 'IV'].indexOf(tm.eixo) + 1;
+        return '<li class="tema ex' + (ei || 1) + '"><span class="tema-n">' + (i + 1) + '</span><div>' + t('temas.' + i + '.titulo', 'span', 'tema-titulo') +
+          '<span class="tema-eixo">Eixo ' + (editing ? t('temas.' + i + '.eixo') : esc(tm.eixo || '')) + '</span></div>' + remover('temas', i, tm.titulo) + '</li>'; }) + '</ol>' +
       (editing ? '<button type="button" class="mini adicionar" data-acao="adicionar" data-lista="temas">+ Adicionar tema</button>' : '') +
     '</div></section>' +
 
@@ -1267,6 +1464,15 @@ body.editando{padding-bottom:120px}
       }).join('') + '</div>' +
     '</div></section>' +
 
+    '<section class="secao" id="parceiros"><div class="wrap"><div class="duas"><h2>' + t('parceirosTitulo') + '</h2><div>' + t('parceirosTexto', 'p', 'texto-longo') +
+        '<div class="acoes" style="margin:22px 0 0"><a class="btn btn-primario" href="#parcerias">Condições de parceria</a><a class="btn btn-secundario" href="' + mailParceria() + '">Quero ser instituição parceira</a></div></div></div>' +
+      ((s.parceiros || []).length || editing ? '<ul class="parceiros">' + lista('parceiros', function(i){ var pc = s.parceiros[i], l = pc.link;
+          return '<li class="parceiro">' + (editing ? t('parceiros.' + i + '.nome', 'span', 'parceiro-nome') + '<div class="campo-inline"><label for="parc-' + i + '">Site</label><input id="parc-' + i + '" type="url" data-input="parceiros.' + i + '.link" value="' + esc(l) + '"></div>' + remover('parceiros', i, pc.nome)
+            : (linkValido(l) ? '<a class="parceiro-nome" href="' + esc(l.trim()) + '" target="_blank" rel="noopener">' + esc(pc.nome) + ' <span aria-hidden="true">↗</span></a>' : '<span class="parceiro-nome">' + esc(pc.nome) + '</span>')) + '</li>'; }) + '</ul>'
+        : '<p class="parceiros-vazio">' + t('parceirosVazio') + '</p>') +
+      (editing ? '<button type="button" class="mini adicionar" data-acao="adicionar" data-lista="parceiros">+ Adicionar instituição parceira</button>' : '') +
+    '</div></section>' +
+
     '<section class="faixa" id="inscricao"><div class="wrap"><div class="duas">' +
       '<div><h2>' + t('inscricao.titulo') + '</h2><p>' + t('inscricao.texto') + '</p>' + botaoInscricao + '</div>' +
       '<div class="contactos">' +
@@ -1276,8 +1482,8 @@ body.editando{padding-bottom:120px}
     '</div></div></section>' +
     '</main>';
 
-    var rodape = '<footer class="rodape"><div class="wrap rodape-logos"><img src="' + LOGOS + '" alt="Instituições de acolhimento: Universidade da Beira Interior, CIDESD e CooLabora. Financiamento 2024.01020.BDANA: FCT, Pessoas 2030 e Portugal 2030"></div><div class="wrap"><span>Projeto Conceções · CooLabora, Covilhã</span>' + t('rodape') + '</div></footer>';
-    app.innerHTML = cabecalho + (naInv ? investigacaoHTML() : naCont ? contactosHTML() : naPart ? participarHTML() : naInfo ? informacaoHTML() : principal) + rodape;
+    var rodape = '<footer class="rodape"><div class="wrap rodape-logos"><img src="' + LOGOS + '" alt="Instituições de acolhimento: Universidade da Beira Interior, CIDESD e CooLabora. Financiamento 2024.01020.BDANA: FCT, Pessoas 2030 e Portugal 2030"></div><div class="wrap"><span>Projeto Conceções · CooLabora, Covilhã · <a href="#parcerias">Parcerias</a></span>' + t('rodape') + '</div></footer>';
+    app.innerHTML = cabecalho + (naInv ? investigacaoHTML() : naCont ? contactosHTML() : naPart ? participarHTML() : naInfo ? informacaoHTML() : naParc ? parceriasHTML() : principal) + rodape;
     document.body.classList.toggle('editando', editing);
     if (naInfo) carregarNoticias();
   }
