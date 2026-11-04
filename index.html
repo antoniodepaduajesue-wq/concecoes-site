@@ -230,6 +230,18 @@ a.mapa:hover .mapa-botao{transform:translateY(-1px)}
   .ilustra-sobre{max-width:320px}
 }
 
+
+.orientacao{display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-top:4px}
+.orientador{display:flex; gap:18px; align-items:flex-start; background:var(--bg); border-radius:20px; padding:22px 24px; border:1px solid var(--line)}
+.orientador.o0{border-top:4px solid var(--c4)} .orientador.o1{border-top:4px solid var(--c1)}
+.orientador-icone{flex:0 0 64px; width:64px; height:64px; border-radius:50%; background:var(--surface); overflow:hidden; display:block}
+.orientador-icone svg{width:100%; height:100%; display:block}
+.orientador h3{font-family:var(--font-display); font-size:21px; font-weight:600; margin:4px 0 8px}
+.orientador p{margin:0; color:var(--muted); font-size:16px}
+.orientador .rotulo-estudo{font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.orientador > div{flex:1; min-width:0}
+@media (max-width: 760px){ .orientacao{grid-template-columns:minmax(0,1fr)} .orientador{flex-direction:column} }
+
 /* Modo de edição */
 [data-campo][contenteditable]{outline:1.5px dashed color-mix(in srgb, var(--focus) 70%, transparent); outline-offset:3px; border-radius:4px; cursor:text}
 [data-campo][contenteditable]:focus{outline:2.5px solid var(--focus)}
@@ -361,7 +373,7 @@ body.editando{padding-bottom:120px}
   "tema": "A investigação pretende aprofundar o conhecimento sobre as experiências e os projetos parentais de pessoas e famílias LGBTQIA+ que recorrem às tecnologias de reprodução assistida (TRA), bem como os efeitos no bem-estar psicológico das crianças.\n\nOs resultados destinam-se a artigos científicos, a apresentações em eventos nacionais e internacionais e à criação de recursos para políticas públicas e de manuais orientadores para profissionais.\n\nO projeto tem parecer favorável da Comissão de Ética da Universidade da Beira Interior (processo n.º CE-UBI-Pj-2025-027-ID7158, de 17 de junho de 2025).",
   "ficha": {
    "programa": "Doutoramento em Psicologia Clínica e da Saúde, Universidade da Beira Interior",
-   "orientacao": "Prof. Doutor Henrique Pereira",
+   "orientacao": "Prof. Doutor Henrique Pereira (UBI); coorientação da Dra. Graça Rojão (CooLabora)",
    "periodo": "Outubro de 2024 a setembro de 2028",
    "financiamento": "FCT, bolsa de doutoramento 2024.01020.BDANA",
    "acolhimento": "UBI · CIDESD · CooLabora",
@@ -739,7 +751,24 @@ body.editando{padding-bottom:120px}
   "noticiasPTTitulo": "Notícias em Portugal",
   "noticiasMundoTitulo": "Notícias no mundo",
   "noticiasMundoNota": "Imprensa do Brasil e de outros países de língua portuguesa e, quando há poucas notícias, imprensa internacional em inglês."
- }
+ },
+ "orientacaoTitulo": "Orientação",
+ "orientacao": [
+  {
+   "papel": "Orientação científica",
+   "nome": "Prof. Doutor Henrique Pereira",
+   "bio": "Professor associado no Departamento de Psicologia e Educação da Faculdade de Ciências Sociais e Humanas da Universidade da Beira Interior e investigador do CIDESD. Orienta a investigação de doutoramento que está na base do Projeto Conceções e dedica-se ao estudo da saúde psicológica, da sexualidade e do bem-estar das pessoas LGBTQIA+.",
+   "rotuloLink": "ORCID",
+   "link": "https://orcid.org/0000-0001-9448-682X"
+  },
+  {
+   "papel": "Coorientação · CooLabora",
+   "nome": "Dra. Graça Rojão",
+   "bio": "Diretora e cofundadora da CooLabora, cooperativa de intervenção social da Covilhã que acolhe o Projeto Conceções. Socióloga, com especialização em Cidadania e Igualdade de Género e pós-graduação em Gestão de Projetos em Parceria pela Universidade de Coimbra, tem mais de duas décadas de trabalho em iniciativas locais pela igualdade e pela inclusão.",
+   "rotuloLink": "Ciência Vitae",
+   "link": "https://www.cienciavitae.pt/E21D-E87C-F129"
+  }
+ ]
 }</script>
 <script id="motor">
 (function(){
@@ -1227,6 +1256,15 @@ body.editando{padding-bottom:120px}
           return linkValido(l.link) ? '<a class="pub-link" href="' + esc(l.link.trim()) + '" target="_blank" rel="noopener">' + esc(l.rotulo) + ' <span aria-hidden="true">↗</span></a>' : '';
         }).join('') + '</div>' +
       '</div></div>' +
+      '<p class="rotulo" style="margin-top:44px">' + t('orientacaoTitulo') + '</p>' +
+      '<div class="orientacao">' + (get('orientacao') || []).map(function(o, i){
+        var p = 'orientacao.' + i, ic = i % 2 ? busto(40, 76, 40, COR.t, PELE[1], CAB[1], 'longo') : busto(40, 76, 40, COR.a, PELE[0], CAB[0], 'curto');
+        return '<article class="orientador o' + i + '"><span class="orientador-icone" aria-hidden="true">' + svgIl('0 0 80 80', ic, '') + '</span><div>' +
+          t(p + '.papel', 'p', 'rotulo-estudo') + '<h3>' + t(p + '.nome') + '</h3>' + t(p + '.bio', 'p') +
+          (editing ? '<div class="campo-inline"><label for="ori-link-' + i + '">Link (' + esc(o.rotuloLink) + ')</label><input id="ori-link-' + i + '" type="url" data-input="' + p + '.link" value="' + esc(o.link) + '"></div>'
+                   : (linkValido(o.link) ? '<div class="pub-acoes"><a class="pub-link" href="' + esc(o.link.trim()) + '" target="_blank" rel="noopener">' + esc(o.rotuloLink) + ' <span aria-hidden="true">↗</span></a></div>' : '')) +
+          '</div></article>';
+      }).join('') + '</div>' +
     '</div></section>' +
 
     '<section class="faixa" id="inscricao"><div class="wrap"><div class="duas">' +
