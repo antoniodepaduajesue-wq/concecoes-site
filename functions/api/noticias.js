@@ -72,7 +72,9 @@ async function rss(q, params) {
   const url = 'https://news.google.com/rss/search?q=' + encodeURIComponent(q) + '&' + params;
   const r = await fetch(url, { cf: { cacheTtl: CACHE_SEGUNDOS, cacheEverything: true }, headers: { 'User-Agent': 'concecoes.pt noticias' } });
   if (!r.ok) throw new Error('RSS ' + r.status);
-  return r.text();
+  const txt = await r.text();
+  if (!/<item>/.test(txt)) throw new Error('RSS sem itens: ' + txt.slice(0, 160));
+  return txt;
 }
 
 // Primeiro as fontes de referência; se forem poucas, completa com a pesquisa geral.
@@ -100,6 +102,8 @@ export async function onRequestGet(context) {
     portugal: pt.status === 'fulfilled' ? pt.value : [],
     mundo: mu.status === 'fulfilled' ? mu.value : [],
   };
+  const erros = [pt, mu].filter(r => r.status === 'rejected').map(r => String(r.reason && r.reason.message || r.reason));
+  if (erros.length) corpo.erros = erros;
   const ok = corpo.portugal.length || corpo.mundo.length;
   const resp = new Response(JSON.stringify(corpo), {
     headers: {
