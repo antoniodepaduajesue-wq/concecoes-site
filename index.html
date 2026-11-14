@@ -273,7 +273,9 @@ a.parceiro-nome:hover{text-decoration:underline}
 
 
 /* Destaques: inscrição e estudo */
-.nav a.cta-estudo{background:#7A3F8B; color:#FFFFFF}
+.nav a.cta-estudo{background:#7A3F8B; color:#FFFFFF; display:inline-flex; flex-direction:column; align-items:flex-start; line-height:1.15; padding:7px 16px}
+.nav a.cta-estudo small{font-size:11.5px; font-weight:500; opacity:.88}
+.destaque-sub{font-family:var(--font-display); font-size:20px; font-weight:500; color:#F3D9F7; margin-top:-4px}
 .nav a.cta-estudo:hover, .nav a.cta-estudo[aria-current="page"]{background:#6A3479; color:#FFFFFF}
 .btn-estudo{background:#7A3F8B; color:#FFFFFF; border-color:#7A3F8B}
 .btn-estudo:hover{background:#6A3479; border-color:#6A3479}
@@ -590,8 +592,8 @@ body.editando{padding-bottom:120px}
   "mapaBotao": "Abrir no Google Maps"
  },
  "participar": {
-  "eyebrow": "Participar no estudo · Estudos 3, 4 e 5",
-  "titulo": "A sua experiência pode ajudar outras famílias",
+  "eyebrow": "Participar no estudo · Entrevista · Estudos 3, 4 e 5",
+  "titulo": "Conte-nos a sua história",
   "intro": "Procuramos pessoas e famílias LGBTQIA+ que recorreram, recorrem ou pensam recorrer à reprodução assistida, para uma entrevista individual. O que nos contar ajuda a melhorar o apoio, os serviços e as políticas públicas para todas as famílias.",
   "estudosTitulo": "Em que estudos pode participar",
   "quemRotulo": "Quem pode participar",
@@ -637,10 +639,10 @@ body.editando{padding-bottom:120px}
    "Pode pedir o acesso, a correção ou a eliminação dos seus dados, nos termos do RGPD."
   ],
   "etica": "Estudo com parecer favorável da Comissão de Ética da Universidade da Beira Interior (CE-UBI), processo n.º CE-UBI-Pj-2025-027-ID7158, emitido na reunião de 17 de junho de 2025. Investigador responsável: António Oliveira, sob orientação do Prof. Doutor Henrique Pereira (Universidade da Beira Interior).",
-  "ctaTitulo": "Quer participar?",
+  "ctaTitulo": "Quer contar a sua história?",
   "ctaTexto": "Preencha o formulário de manifestação de interesse. Entramos em contacto consigo nos próximos dias.",
   "link": "https://tally.so/r/e551p0",
-  "botao": "Quero participar no estudo"
+  "botao": "Quero contar a minha história"
  },
  "informacao": {
   "eyebrow": "Informação útil",
@@ -1449,7 +1451,7 @@ body.editando{padding-bottom:120px}
     '<header class="topo"><div class="wrap">' +
       '<a class="marca" href="#inicio" aria-label="Projeto Conceções, início">' + simbolo('', '').replace('<svg', '<svg width="44" height="44"') +
       '<span><small>PROJETO</small><strong>Conceções</strong></span></a>' +
-      '<nav class="nav" aria-label="Secções"><a href="#sobre">Sobre</a><a href="#temas">Temas</a><a href="#encontros">Quando e onde</a><a href="#investigacao"' + (naInv ? ' aria-current="page"' : '') + '>Investigação</a><a href="#informacao"' + (naInfo ? ' aria-current="page"' : '') + '>Informação</a><a href="#contactos"' + (naCont ? ' aria-current="page"' : '') + '>Contactos</a><a class="cta-estudo" href="#participar"' + (naPart ? ' aria-current="page"' : '') + '>Participar no estudo</a><a class="cta" href="#inscricao">Inscrição nas sessões</a></nav>' +
+      '<nav class="nav" aria-label="Secções"><a href="#sobre">Sobre</a><a href="#temas">Temas</a><a href="#encontros">Quando e onde</a><a href="#investigacao"' + (naInv ? ' aria-current="page"' : '') + '>Investigação</a><a href="#informacao"' + (naInfo ? ' aria-current="page"' : '') + '>Informação</a><a href="#contactos"' + (naCont ? ' aria-current="page"' : '') + '>Contactos</a><a class="cta-estudo" href="#participar"' + (naPart ? ' aria-current="page"' : '') + '><span>Participar no estudo</span><small>Entrevista · contar a minha história</small></a><a class="cta" href="#inscricao">Inscrição nas sessões</a></nav>' +
     '</div></header>';
 
     var principal =
@@ -1459,7 +1461,7 @@ body.editando{padding-bottom:120px}
         '<p class="eyebrow">' + t('eyebrow') + '</p>' +
         '<h1>' + t('titulo') + '</h1>' +
         '<p class="lead">' + t('lead') + '</p>' +
-        '<div class="acoes"><a class="btn btn-primario" href="#inscricao">Inscrever-me nas sessões</a><a class="btn btn-estudo" href="#participar">Participar no estudo</a></div>' +
+        '<div class="acoes"><a class="btn btn-primario" href="#inscricao">Inscrever-me nas sessões</a><a class="btn btn-estudo" href="#participar">Participar no estudo: contar a minha história</a></div>' +
         '<ul class="chips" aria-label="A quem se destina">' + lista('chips', function(i){ return '<li><span class="bolinha ' + cor(i) + '"></span>' + t('chips.' + i) + remover('chips', i, s.chips[i]) + '</li>'; }) +
         (editing ? '<li><button type="button" class="mini" data-acao="adicionar" data-lista="chips">+ Etiqueta</button></li>' : '') + '</ul>' +
       '</div>' +
@@ -1468,7 +1470,7 @@ body.editando{padding-bottom:120px}
 
     '<section class="destaques" aria-label="Destaques"><div class="wrap"><div class="destaques-grelha">' +
       '<a class="destaque destaque-sessoes" href="#inscricao"><span class="destaque-rotulo">Encontros mensais · gratuitos</span><span class="destaque-titulo">Inscrição nas sessões</span><span class="destaque-texto">' + esc(get('encontro.proximo') || '') + ' · CooLabora, Covilhã</span><span class="destaque-seta">Inscrever-me <span aria-hidden="true">→</span></span></a>' +
-      '<a class="destaque destaque-estudo" href="#participar"><span class="destaque-rotulo">Investigação · Estudos 3, 4 e 5</span><span class="destaque-titulo">Participar no estudo</span><span class="destaque-texto">Entrevista individual e confidencial para pessoas e famílias LGBTQIA+ que recorreram ou pensam recorrer à reprodução assistida.</span><span class="destaque-seta">Saber mais e participar <span aria-hidden="true">→</span></span></a>' +
+      '<a class="destaque destaque-estudo" href="#participar"><span class="destaque-rotulo">Investigação · Entrevista</span><span class="destaque-titulo">Participar no estudo</span><span class="destaque-sub">Contar a minha história</span><span class="destaque-texto">Entrevista individual e confidencial para pessoas e famílias LGBTQIA+ que recorreram ou pensam recorrer à reprodução assistida.</span><span class="destaque-seta">Quero contar a minha história <span aria-hidden="true">→</span></span></a>' +
     '</div></div></section>' +
 
     '<section class="secao cinza" id="sobre"><div class="wrap">' +
