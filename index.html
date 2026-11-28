@@ -183,6 +183,12 @@ h2{font-family:var(--font-display); font-weight:600; font-size:clamp(32px, 4vw, 
 .nauto-item a:hover{text-decoration:underline}
 .nauto-vazio{color:var(--muted); font-size:16px; padding:8px 0}
 .nauto-vazio a{color:var(--ink); font-weight:600}
+.nauto-destaque{background:var(--bg); border:1.5px solid var(--c3); border-radius:16px; padding:16px 18px !important; margin-bottom:10px}
+.nauto-destaque + .nauto-item{border-top:none}
+.nauto-tag{align-self:flex-start; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#FFFFFF; background:#1F7F72; border-radius:999px; padding:3px 10px}
+.nauto-titulo{font-weight:600; font-size:17px; line-height:1.4}
+.nauto-resumo{margin:2px 0 0; font-size:15px; line-height:1.5; color:var(--muted)}
+.nauto-extra{font-size:15px !important; font-weight:600}
 .nfixas-titulo{font-family:var(--font-display); font-size:21px; margin:36px 0 0}
 @media (max-width: 760px){ .noticias-cols{grid-template-columns:minmax(0,1fr)} .noticias-col{padding:20px} }
 .pub .noticia-data + div h3{margin-top:0}
@@ -883,7 +889,18 @@ body.editando{padding-bottom:120px}
   "noticiasTexto": "Notícias recentes sobre procriação medicamente assistida, gestação de substituição, infertilidade, adoção e famílias LGBTQIA+. A lista atualiza-se sozinha, várias vezes por dia.",
   "noticiasPTTitulo": "Notícias em Portugal",
   "noticiasMundoTitulo": "Notícias no mundo",
-  "noticiasMundoNota": "Imprensa do Brasil e de outros países de língua portuguesa e, quando há poucas notícias, imprensa internacional em inglês."
+  "noticiasMundoNota": "Imprensa do Brasil e de outros países de língua portuguesa e, quando há poucas notícias, imprensa internacional em inglês.",
+  "noticiasDestaque": [
+   {
+    "data": "20/11/2026",
+    "titulo": "Medicamentos para tratamentos de fertilidade vão ser gratuitos e haverá novo centro público no sul do país",
+    "fonte": "Expresso",
+    "resumo": "O Parlamento aprovou, no Orçamento do Estado para 2027, uma proposta do PCP que torna gratuitos os medicamentos prescritos nos tratamentos de procriação medicamente assistida e prevê a abertura de um novo centro público de PMA no sul do país em 2027.",
+    "link": "",
+    "extraRotulo": "Ler também na IOL (acesso livre)",
+    "extraLink": "https://www.iol.pt/procriacao-medicamente-assistida/centro-publico-sul-do-pais/quem-esta-a-tentar-ter-um-filho-vai-deixar-de-pagar-os-medicamentos-para-tratamentos-de-fertilidade"
+   }
+  ]
  },
  "orientacaoTitulo": "Orientação",
  "orientacao": [
@@ -1130,8 +1147,23 @@ body.editando{padding-bottom:120px}
     var d = new Date(iso); if (isNaN(d)) return '';
     return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
   }
+  function destaquesNoticias(){
+    return (get('informacao.noticiasDestaque') || []).map(function(n){
+      var tit = linkValido(n.link) ? '<a href="' + esc(n.link.trim()) + '" target="_blank" rel="noopener">' + esc(n.titulo) + ' <span aria-hidden="true">↗</span></a>' : '<span class="nauto-titulo">' + esc(n.titulo) + '</span>';
+      return '<li class="nauto-item nauto-destaque"><span class="nauto-tag">Destaque</span><span class="nauto-meta">' + esc(n.data) + (n.fonte ? ' · ' + esc(n.fonte) : '') + '</span>' + tit +
+        (n.resumo ? '<p class="nauto-resumo">' + esc(n.resumo) + '</p>' : '') +
+        (linkValido(n.extraLink) ? '<a class="nauto-extra" href="' + esc(n.extraLink.trim()) + '" target="_blank" rel="noopener">' + esc(n.extraRotulo || 'Ler mais') + ' <span aria-hidden="true">↗</span></a>' : '') + '</li>';
+    }).join('');
+  }
   function noticiasAuto(k){
+    if (k === 'portugal') return destaquesNoticias() + noticiasLista(k);
+    return noticiasLista(k);
+  }
+  function noticiasLista(k){
     var itens = NOTICIAS && NOTICIAS[k];
+    var chaveN = function(x){ return String(x || '').toLowerCase().replace(/[^a-zà-ú0-9]+/g, ' ').trim().slice(0, 50); };
+    var emDestaque = (get('informacao.noticiasDestaque') || []).map(function(n){ return chaveN(n.titulo); });
+    if (itens) itens = itens.filter(function(n){ return emDestaque.indexOf(chaveN(n.titulo)) < 0; });
     if (itens && itens.length) return itens.map(function(n){
       return '<li class="nauto-item"><span class="nauto-meta">' + esc(dataPT(n.data)) + (n.fonte ? ' · ' + esc(n.fonte) : '') + '</span>' +
         (linkValido(n.link) ? '<a href="' + esc(n.link) + '" target="_blank" rel="noopener">' + esc(n.titulo) + ' <span aria-hidden="true">↗</span></a>' : esc(n.titulo)) + '</li>';
@@ -1194,6 +1226,14 @@ body.editando{padding-bottom:120px}
       return '<div class="cartao-contacto apoio"><span class="valor">' + t(p + '.nome') + '</span>' + t(p + '.texto', 'p', 'morada') +
         (editing ? '' : ext(get(p + '.link'), 'Visitar site')) + '</div>';
     });
+    var destaquesEd = lista('informacao.noticiasDestaque', function(i){
+      var p = 'informacao.noticiasDestaque.' + i;
+      var campo = function(id, rot, k){ return '<div class="campo-inline"><label for="' + id + i + '">' + rot + '</label><input id="' + id + i + '" type="url" data-input="' + p + '.' + k + '" value="' + esc(get(p + '.' + k)) + '"></div>'; };
+      return '<li class="pub"><span class="pub-ano noticia-data">' + t(p + '.data') + '</span><div><h3>' + t(p + '.titulo') + '</h3>' + t(p + '.fonte', 'p', 'revista') + t(p + '.resumo', 'p') +
+        campo('dest-link-', 'Link da notícia', 'link') + campo('dest-extra-', 'Link alternativo (opcional)', 'extraLink') +
+        '<div class="campo-inline"><label>Texto do link alternativo</label>' + t(p + '.extraRotulo', 'p') + '</div>' +
+        '<div class="pub-acoes"><button type="button" class="mini" data-acao="remover" data-lista="informacao.noticiasDestaque" data-i="' + i + '">Remover destaque</button></div></div></li>';
+    });
     var noticias = lista('informacao.noticias', function(i){
       var p = 'informacao.noticias.' + i, l = get(p + '.link');
       return '<li class="pub"><span class="pub-ano noticia-data">' + t(p + '.data') + '</span><div><h3>' + t(p + '.titulo') + '</h3>' + t(p + '.fonte', 'p', 'revista') +
@@ -1227,6 +1267,8 @@ body.editando{padding-bottom:120px}
           '<div class="noticias-col" id="noticias-mundo"><h3>' + t('informacao.noticiasMundoTitulo') + '</h3><p class="nauto-nota">' + t('informacao.noticiasMundoNota') + '</p><ol class="nauto" data-nauto="mundo">' + noticiasAuto('mundo') + '</ol></div>' +
         '</div>' +
         '<p class="nota" data-nauto-atual>' + notaNoticias() + '</p>' +
+        (editing ? '<h3 class="nfixas-titulo">Notícias em destaque</h3><p class="nota" style="margin-top:4px">Aparecem sempre no topo de "Notícias em Portugal", antes das automáticas.</p><ol class="pubs">' + destaquesEd + '</ol>' +
+                   '<button type="button" class="mini adicionar" data-acao="adicionar" data-lista="informacao.noticiasDestaque">+ Adicionar destaque</button>' : '') +
         (editing ? '<h3 class="nfixas-titulo">Notícias fixas</h3><p class="nota" style="margin-top:4px">Aparecem em "Notícias em Portugal" apenas quando as automáticas não carregam (por exemplo, nesta pré-visualização).</p><ol class="pubs">' + noticias + '</ol>' +
                    '<button type="button" class="mini adicionar" data-acao="adicionar" data-lista="informacao.noticias">+ Adicionar notícia</button>' : '') +
       '</div></section>' +
@@ -1366,6 +1408,7 @@ body.editando{padding-bottom:120px}
     parceiros: { nome: 'Nome da instituição', link: '' },
     chips: 'Nova etiqueta',
     'informacao.noticias': { data: 'DD/MM/AAAA', titulo: 'Título da notícia', fonte: 'Fonte', link: '' },
+    'informacao.noticiasDestaque': { data: 'DD/MM/AAAA', titulo: 'Título da notícia', fonte: 'Fonte', resumo: 'Resumo em uma ou duas frases.', link: '', extraRotulo: '', extraLink: '' },
     'informacao.centros': { nome: 'Nome do centro', cidade: 'Cidade', destaque: '' },
     'informacao.centrosPrivados': { nome: 'Nome do centro', cidade: 'Cidade', link: '', destaque: '' },
     'investigacao.publicacoes': { ano: '2026', titulo: 'Título do artigo', autores: 'Apelido, A., & Apelido, B.', revista: 'Nome da revista, volume(número), páginas', link: '' }

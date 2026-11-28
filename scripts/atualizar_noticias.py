@@ -19,7 +19,7 @@ REFERENCIA = " OR ".join("site:" + s for s in [
 
 PESQUISAS = {
     "portugal": {
-        "consultas": [('"procriação medicamente assistida" OR "gestação de substituição" OR "barrigas de aluguer" OR "barriga de aluguer" OR infertilidade OR "fertilização in vitro" OR "adoção de crianças" OR homoparentais OR "famílias LGBT" when:120d', "hl=pt-PT&gl=PT&ceid=PT:pt-150")],
+        "consultas": [('"procriação medicamente assistida" OR "gestação de substituição" OR "barrigas de aluguer" OR "barriga de aluguer" OR infertilidade OR "tratamentos de fertilidade" OR "fertilização in vitro" OR "adoção de crianças" OR homoparentais OR "famílias LGBT" when:120d', "hl=pt-PT&gl=PT&ceid=PT:pt-150")],
         "so_portugal": True,
         "tema": re.compile(r"procria|\bPMA\b|gesta[çc][ãa]o de substitui|barrigas? de aluguer|infertil|fertilidade|fertiliza[çc][ãa]o|in vitro|embri[ãa]o|embri[õo]es|ado[çc][ãa]o|adot|homoparent|LGBT|parentalidade", re.I),
     },
